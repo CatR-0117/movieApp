@@ -9,18 +9,18 @@ type ListSectionProps = {
 
 const ListSection = ({ movies, title }: ListSectionProps) => {
   return (
-    <section className="w-full">
-      <div className="mb-6 flex flex-col gap-4 border-b border-zinc-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
-        <div className="flex min-w-0 gap-4">
-          <div className="mt-2 h-10 w-1.5 shrink-0 rounded-full bg-[#4338CA]" />
+    <section className="w-[960px]">
+      <div className="mb-6 flex h-[64px] items-center justify-between border-b border-zinc-200 pb-4">
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="h-9 w-1.5 shrink-0 rounded-full bg-[#4338CA]" />
           <div className="min-w-0">
-            <h2 className="mt-3 text-2xl font-semibold leading-8 text-zinc-950">
+            <h2 className="text-2xl font-semibold leading-8 text-zinc-950">
               {title}
             </h2>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <span className="hidden rounded-md border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-500 sm:inline-flex">
+          <span className="inline-flex h-8 items-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-500">
             {movies.length} movies
           </span>
           <Button
@@ -33,7 +33,7 @@ const ListSection = ({ movies, title }: ListSectionProps) => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+      <div className="grid grid-cols-[repeat(4,222px)] gap-x-6 gap-y-8">
         {movies.map((movie) => (
           <MovieCard key={`${title}-${movie.title}`} {...movie} />
         ))}

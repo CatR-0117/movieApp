@@ -16,6 +16,33 @@ const movieSections = [
   },
 ];
 
+const carousel = [
+  {
+    title: "Wicked",
+    genre: "Fairy Tale",
+    year: "2024",
+    rating: "7.3",
+    description:
+      "Elphaba, a young woman ridiculed for her green skin, and Galinda, a popular girl, become friends at Shiz University in the Land of Oz. After an encounter with the Wonderful Wizard of Oz, their friendship reaches a crossroads.",
+  },
+  {
+    title: "Gladiator 2",
+    genre: "Action",
+    year: "2024",
+    rating: "6.4",
+    description:
+      "After his home is conquered by the tyrannical emperors who now lead Rome, Lucius is forced to enter the Colosseum and must look to his past to find strength to return the glory of Rome to its people.",
+  },
+  {
+    title: "Moana 2",
+    genre: "Animation",
+    year: "2024",
+    rating: "6.3",
+    description:
+      "After receiving an unexpected call from her wayfinding ancestors, Moana must journey to the far seas of Oceania and into dangerous, long-lost waters for an adventure unlike anything she's ever faced.",
+  },
+];
+
 const movies = [
   {
     genre: "Comedy",
@@ -57,18 +84,10 @@ const movies = [
 
 const Home = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-zinc-50">
-      <div>
-        <div className="flex">
-          <p>2026</p>
-          <p>genre</p>
-        </div>
-        <p>Dear santa</p>
-        <p>description</p>
-        <button>Watch trailer</button>
-      </div>
-      <div className="w-full max-w-[1120px] px-4 py-10 sm:px-6 lg:py-14">
-        <div className="flex flex-col gap-14 md:gap-16">
+    <div className="flex min-h-screen min-w-[960px] flex-col items-center gap-10 bg-zinc-50">
+      <CarouselCard slides={carousel} />
+      <div className="w-[960px]">
+        <div className="my-4 flex flex-col gap-14">
           {movieSections.map((section) => (
             <ListSection key={section.title} {...section} movies={movies} />
           ))}

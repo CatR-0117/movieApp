@@ -4,9 +4,9 @@ const socialLinks = ["Facebook", "Instagram", "Twitter", "Youtube"];
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-zinc-950 text-white">
-      <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-9 px-4 py-10 sm:px-6 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
-        <div className="max-w-sm">
+    <footer className="mt-4 w-full bg-zinc-950 text-white">
+      <div className="mx-auto flex w-[880px] items-start justify-between gap-16 py-10">
+        <div className="w-[260px]">
           <div className="flex items-center gap-2">
             <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#4338CA]">
               <Film className="size-5" />
@@ -18,7 +18,7 @@ const Footer = () => {
           </p>
         </div>
 
-        <div className="grid flex-1 gap-8 border-t border-white/10 pt-8 sm:grid-cols-2 lg:max-w-2xl lg:border-t-0 lg:pt-0">
+        <div className="grid w-[560px] grid-cols-[270px_220px] gap-10">
           <div className="space-y-4">
             <p className="text-sm font-semibold leading-5">
               Contact Information
