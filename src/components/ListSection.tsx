@@ -1,16 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import MovieCard, { type MovieCardProps } from "./MovieCard";
-import { Button } from "./ui/button";
 
 type ListSectionProps = {
+  href?: string;
   movies: MovieCardProps[];
   title: string;
 };
 
-const ListSection = ({ movies, title }: ListSectionProps) => {
+const ListSection = ({ href, movies, title }: ListSectionProps) => {
   return (
-    <section className="w-[960px]">
-      <div className="mb-6 flex h-[64px] items-center justify-between border-b border-zinc-200 pb-4">
+    <section className="w-full">
+      <div className="mb-6 flex min-h-[64px] flex-wrap items-center justify-between gap-4 border-b border-zinc-200 pb-4">
         <div className="flex min-w-0 items-center gap-4">
           <div className="h-9 w-1.5 shrink-0 rounded-full bg-[#4338CA]" />
           <div className="min-w-0">
@@ -23,17 +23,20 @@ const ListSection = ({ movies, title }: ListSectionProps) => {
           <span className="inline-flex h-8 items-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-500">
             {movies.length} movies
           </span>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-9 border-zinc-200 bg-white px-3 text-zinc-900 hover:border-zinc-300 hover:bg-zinc-50"
-          >
-            See more
-            <ArrowRight className="size-4" />
-          </Button>
+          {href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-900 transition hover:border-zinc-300 hover:bg-zinc-50"
+            >
+              See more
+              <ArrowRight className="size-4" />
+            </a>
+          ) : null}
         </div>
       </div>
-      <div className="grid grid-cols-[repeat(4,222px)] gap-x-6 gap-y-8">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
         {movies.map((movie) => (
           <MovieCard key={`${title}-${movie.title}`} {...movie} />
         ))}
