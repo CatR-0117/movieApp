@@ -35,14 +35,18 @@ const CarouselCard = ({ slides }: CarouselCardProps) => {
         {slides.map((slide, index) => (
           <CarouselItem key={slide.id ?? slide.title} className="pl-0">
             <div className="relative h-[440px] w-full overflow-hidden bg-zinc-900 sm:h-[500px] lg:h-[540px]">
-              <Image
-                src={slide.imageUrl}
-                alt={`${slide.title} backdrop`}
-                fill
-                priority={index === 0}
-                sizes="(min-width: 1024px) 1152px, 100vw"
-                className="object-cover"
-              />
+              {slide.imageUrl ? (
+                <Image
+                  src={slide.imageUrl}
+                  alt={`${slide.title} backdrop`}
+                  fill
+                  priority={index === 0}
+                  sizes="(min-width: 1024px) 1152px, 100vw"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-zinc-900" />
+              )}
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/85 via-zinc-950/40 to-transparent" />
               <div className="absolute inset-x-5 bottom-8 max-w-[430px] font-bold text-white sm:bottom-14 sm:left-10 lg:bottom-[75px] lg:left-[75px]">
                 <div className="flex min-h-6 flex-wrap items-center gap-2 text-xs">

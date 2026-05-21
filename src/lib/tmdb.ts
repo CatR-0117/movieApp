@@ -223,6 +223,13 @@ export async function getMovieHomeData(): Promise<MovieHomeData> {
             .map((movie) => mapMovieToCard(movie, genres)),
           title: "Top Rated",
         },
+        {
+          href: "https://www.themoviedb.org/movie/upcoming",
+          movies: upcoming.results
+            .slice(0, 8)
+            .map((movie) => mapMovieToCard(movie, genres)),
+          title: "Up Coming",
+        },
       ],
     };
   } catch {

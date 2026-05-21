@@ -1,14 +1,16 @@
 import CarouselCard from "@/components/CarouselCard";
 import Footer from "@/components/Footer";
 import ListSection from "@/components/ListSection";
+import NavBar from "@/components/NavBar";
 import { getMovieHomeData } from "@/lib/tmdb";
 
 const Home = async () => {
   const { carousel, sections } = await getMovieHomeData();
 
   return (
-    <div className="flex min-h-screen flex-col items-center gap-10 bg-zinc-50">
+    <div className="flex min-h-screen flex-col items-center gap-10 bg-zinc-50 text-zinc-950 transition-colors dark:bg-zinc-950 dark:text-zinc-50">
       <main className="flex w-full flex-1 flex-col items-center gap-10 px-4 py-6 sm:px-6 lg:px-8">
+        <NavBar />
         <CarouselCard slides={carousel} />
         <div className="w-full max-w-6xl">
           <div className="flex flex-col gap-14">
