@@ -38,7 +38,7 @@ const ListSection = ({ href, movies, title }: ListSectionProps) => {
       </div>
       <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
         {movies.map((movie) => (
-          <MovieCard key={`${title}-${movie.title}`} {...movie} />
+          <MovieCard key={`${title}-${movie.id ?? movie.title}`} {...movie} />
         ))}
       </div>
     </section>

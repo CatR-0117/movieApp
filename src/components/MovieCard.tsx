@@ -1,8 +1,10 @@
 import { Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export type MovieCardProps = {
   genre?: string;
+  id?: number;
   imgUrl?: string;
   rating?: string;
   tmdbUrl?: string;
@@ -12,6 +14,7 @@ export type MovieCardProps = {
 
 const MovieCard = ({
   genre = "",
+  id,
   imgUrl = "",
   rating = "",
   tmdbUrl,
@@ -54,15 +57,28 @@ const MovieCard = ({
     </article>
   );
 
-  if (!tmdbUrl) {
-    return card;
+  if (id) {
+    return (
+      <Link href={`/movie/${id}`} className="block h-full">
+        {card}
+      </Link>
+    );
   }
 
-  return (
-    <a href={tmdbUrl} target="_blank" rel="noreferrer" className="block h-full">
-      {card}
-    </a>
-  );
+  if (tmdbUrl) {
+    return (
+      <a
+        href={tmdbUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="block h-full"
+      >
+        {card}
+      </a>
+    );
+  }
+
+  return card;
 };
 
 export default MovieCard;

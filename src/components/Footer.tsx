@@ -1,6 +1,23 @@
 import { Film, Mail, Phone } from "lucide-react";
 
-const socialLinks = ["Facebook", "Instagram", "Twitter", "Youtube"];
+const socialLinks = [
+  {
+    href: "https://www.facebook.com",
+    name: "Facebook",
+  },
+  {
+    href: "https://www.instagram.com",
+    name: "Instagram",
+  },
+  {
+    href: "https://twitter.com",
+    name: "Twitter",
+  },
+  {
+    href: "https://www.youtube.com",
+    name: "Youtube",
+  },
+];
 
 const Footer = () => {
   return (
@@ -30,7 +47,7 @@ const Footer = () => {
               <div>
                 <p className="font-medium text-white">Email</p>
                 <a
-                  href=""
+                  href="mailto:support@movieZ.com"
                   className="text-zinc-300 transition hover:text-white"
                 >
                   support@movieZ.com
@@ -44,7 +61,7 @@ const Footer = () => {
               <div>
                 <p className="font-medium text-white">Phone</p>
                 <a
-                  href=""
+                  href="tel:+976111234567"
                   className="text-zinc-300 transition hover:text-white"
                 >
                   +976 (11) 123-4567
@@ -58,11 +75,13 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-3">
               {socialLinks.map((socialLink) => (
                 <a
-                  href=""
-                  key={socialLink}
+                  href={socialLink.href}
+                  key={socialLink.name}
+                  rel="noreferrer"
+                  target="_blank"
                   className="rounded-[8px] border border-[#4338CA] px-3 py-2 text-sm font-medium leading-5 text-zinc-300 transition hover:bg-white/10 hover:text-white"
                 >
-                  {socialLink}
+                  {socialLink.name}
                 </a>
               ))}
             </div>
