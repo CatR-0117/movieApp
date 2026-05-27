@@ -113,8 +113,8 @@ const CarouselCard = ({ slides }: CarouselCardProps) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-3 z-30 size-9 border-white/20 bg-zinc-950/70 text-white hover:bg-zinc-950/90 sm:left-5" />
-      <CarouselNext className="right-3 z-30 size-9 border-white/20 bg-zinc-950/70 text-white hover:bg-zinc-950/90 sm:right-5" />
+      <CarouselPrevious className="left-3 z-30 size-9 border-white/20 bg-zinc-950/70 text-white sm:left-5" />
+      <CarouselNext className="right-3 z-30 size-9 border-white/20 bg-zinc-950/70 text-white sm:right-5" />
     </Carousel>
   );
 };

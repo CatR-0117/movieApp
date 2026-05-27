@@ -7,7 +7,7 @@ const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 const TMDB_REVALIDATE_SECONDS = 60 * 60;
 const MOVIES_PER_PAGE = 20;
 const SEARCH_FILTER_PAGE_LIMIT = 10;
-const TMDB_MAX_PAGE = 500;
+const TMDB_MAX_PAGE = 200;
 
 type TmdbMovie = {
   backdrop_path: string | null;
@@ -67,7 +67,6 @@ type TmdbGenreResponse = {
 };
 
 export type MovieSection = {
-  href: string;
   movies: MovieCardProps[];
   title: string;
 };
@@ -138,22 +137,18 @@ const fallbackData: MovieHomeData = {
   carousel: fallbackCarousel,
   sections: [
     {
-      href: "https://www.themoviedb.org/movie/now-playing",
       movies: fallbackMovies,
       title: "Now Playing",
     },
     {
-      href: "https://www.themoviedb.org/movie/popular",
       movies: fallbackMovies,
       title: "Popular",
     },
     {
-      href: "https://www.themoviedb.org/movie/top-rated",
       movies: fallbackMovies,
       title: "Top Rated",
     },
     {
-      href: "https://www.themoviedb.org/movie/upcoming",
       movies: fallbackMovies,
       title: "Upcoming",
     },
@@ -324,14 +319,13 @@ const mapMovieToSlide = (
 
 export async function getMovieHomeData(): Promise<MovieHomeData> {
   try {
-    const [genresResponse, trending, nowPlaying, popular, topRated, upcoming] =
+    const [genresResponse, trending, nowPlaying, popular, topRated] =
       await Promise.all([
         tmdbFetch<TmdbGenreResponse>("/genre/movie/list"),
         tmdbFetch<TmdbMovieListResponse>("/trending/movie/week"),
         tmdbFetch<TmdbMovieListResponse>("/movie/now_playing", { page: "1" }),
         tmdbFetch<TmdbMovieListResponse>("/movie/popular", { page: "1" }),
         tmdbFetch<TmdbMovieListResponse>("/movie/top_rated", { page: "1" }),
-        tmdbFetch<TmdbMovieListResponse>("/movie/upcoming", { page: "1" }),
       ]);
 
     const genres = new Map(
@@ -345,32 +339,20 @@ export async function getMovieHomeData(): Promise<MovieHomeData> {
         .map((movie) => mapMovieToSlide(movie, genres)),
       sections: [
         {
-          href: "https://www.themoviedb.org/movie/now-playing",
-          movies: nowPlaying.results
-            .slice(0, 8)
-            .map((movie) => mapMovieToCard(movie, genres)),
+          movies: nowPlaying.results.map((movie) =>
+            mapMovieToCard(movie, genres),
+          ),
           title: "Now Playing",
         },
         {
-          href: "https://www.themoviedb.org/movie/popular",
-          movies: popular.results
-            .slice(0, 8)
-            .map((movie) => mapMovieToCard(movie, genres)),
+          movies: popular.results.map((movie) => mapMovieToCard(movie, genres)),
           title: "Popular",
         },
         {
-          href: "https://www.themoviedb.org/movie/top-rated",
-          movies: topRated.results
-            .slice(0, 8)
-            .map((movie) => mapMovieToCard(movie, genres)),
+          movies: topRated.results.map((movie) =>
+            mapMovieToCard(movie, genres),
+          ),
           title: "Top Rated",
-        },
-        {
-          href: "https://www.themoviedb.org/movie/upcoming",
-          movies: upcoming.results
-            .slice(0, 8)
-            .map((movie) => mapMovieToCard(movie, genres)),
-          title: "Upcoming",
         },
       ],
     };
