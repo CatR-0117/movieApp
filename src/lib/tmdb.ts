@@ -7,7 +7,7 @@ const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 const TMDB_REVALIDATE_SECONDS = 60 * 60;
 const MOVIES_PER_PAGE = 20;
 const SEARCH_FILTER_PAGE_LIMIT = 10;
-const TMDB_MAX_PAGE = 200;
+const TMDB_MAX_PAGE = 500;
 
 type TmdbMovie = {
   backdrop_path: string | null;
@@ -50,6 +50,16 @@ type TmdbMovieDetail = {
   status: string;
   tagline: string;
   title: string;
+  videos?: {
+    results: {
+      id: string;
+      key: string;
+      name: string;
+      official: boolean;
+      site: string;
+      type: string;
+    }[];
+  };
   vote_average: number;
 };
 
@@ -96,7 +106,10 @@ export type MovieDetailData = {
     profileUrl?: string;
   }[];
   director?: string;
-  genres: string[];
+  genres: {
+    id: number;
+    name: string;
+  }[];
   homepage?: string;
   id: number;
   overview: string;
@@ -109,6 +122,11 @@ export type MovieDetailData = {
   tagline?: string;
   title: string;
   tmdbUrl: string;
+  trailer?: {
+    embedUrl: string;
+    name: string;
+    watchUrl: string;
+  };
   year: string;
 };
 
@@ -252,6 +270,29 @@ const getPrimaryGenre = (genreIds: number[], genres: Map<number, string>) => {
   const genre = genreIds.map((id) => genres.get(id)).find(Boolean);
 
   return genre ?? "Movie";
+};
+
+const getPrimaryTrailer = (videos: TmdbMovieDetail["videos"]) => {
+  const youtubeVideos =
+    videos?.results.filter((video) => video.site === "YouTube" && video.key) ??
+    [];
+  const trailer =
+    youtubeVideos.find((video) => video.official && video.type === "Trailer") ??
+    youtubeVideos.find((video) => video.type === "Trailer") ??
+    youtubeVideos.find((video) => video.type === "Teaser") ??
+    youtubeVideos[0];
+
+  if (!trailer) {
+    return undefined;
+  }
+
+  const key = encodeURIComponent(trailer.key);
+
+  return {
+    embedUrl: `https://www.youtube-nocookie.com/embed/${key}?rel=0`,
+    name: trailer.name || "Trailer",
+    watchUrl: `https://www.youtube.com/watch?v=${key}`,
+  };
 };
 
 async function tmdbFetch<T>(
@@ -531,11 +572,12 @@ export async function getMovieDetailData(
 
   try {
     const movie = await tmdbFetch<TmdbMovieDetail>(`/movie/${numericMovieId}`, {
-      append_to_response: "credits",
+      append_to_response: "credits,videos",
     });
     const director = movie.credits?.crew.find(
       (member) => member.job === "Director",
     );
+    const trailer = getPrimaryTrailer(movie.videos);
 
     return {
       backdropUrl:
@@ -550,7 +592,10 @@ export async function getMovieDetailData(
           profileUrl: getTmdbImageUrl(member.profile_path, "w342"),
         })) ?? [],
       director: director?.name,
-      genres: movie.genres.map((genre) => genre.name),
+      genres: movie.genres.map((genre) => ({
+        id: genre.id,
+        name: genre.name,
+      })),
       homepage: movie.homepage ?? undefined,
       id: movie.id,
       overview: movie.overview,
@@ -563,6 +608,7 @@ export async function getMovieDetailData(
       tagline: movie.tagline || undefined,
       title: movie.title,
       tmdbUrl: getTmdbMovieUrl(movie.id),
+      trailer,
       year: formatYear(movie.release_date),
     };
   } catch {

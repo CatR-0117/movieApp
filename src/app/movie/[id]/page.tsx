@@ -1,8 +1,9 @@
-import { ArrowLeft, ExternalLink, Home, Star } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { getMovieDetailData } from "@/lib/tmdb";
@@ -85,13 +86,7 @@ const MovieDetailPage = async ({ params }: MovieDetailPageProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-zinc-950/35" />
           <div className="relative z-10 grid min-h-[560px] gap-8 p-5 sm:p-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:p-10">
             <div className="flex flex-col gap-5">
-              <Link
-                href="/"
-                className="inline-flex h-10 w-fit items-center gap-2 rounded-md border border-white/20 bg-white/10 px-3 text-sm font-medium transition hover:bg-white/20"
-              >
-                <ArrowLeft className="size-4" />
-                Back
-              </Link>
+              <BackButton />
               <div className="relative aspect-[2/3] w-full max-w-[240px] overflow-hidden rounded-[8px] bg-zinc-800 shadow-2xl lg:max-w-none">
                 {movie.posterUrl ? (
                   <Image
@@ -110,12 +105,13 @@ const MovieDetailPage = async ({ params }: MovieDetailPageProps) => {
             <div className="flex min-w-0 flex-col justify-end gap-6 lg:pb-3">
               <div className="flex flex-wrap gap-2">
                 {movie.genres.map((genre) => (
-                  <span
-                    key={genre}
-                    className="inline-flex h-8 items-center rounded-md bg-white/10 px-3 text-sm font-medium text-white ring-1 ring-white/15"
+                  <Link
+                    key={genre.id}
+                    href={`/search?genre=${genre.id}`}
+                    className="inline-flex h-8 items-center rounded-md bg-white/10 px-3 text-sm font-medium text-white ring-1 ring-white/15 transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                   >
-                    {genre}
-                  </span>
+                    {genre.name}
+                  </Link>
                 ))}
               </div>
               <div>
@@ -158,31 +154,41 @@ const MovieDetailPage = async ({ params }: MovieDetailPageProps) => {
                   </div>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href={movie.tmdbUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex h-10 items-center gap-2 rounded-md bg-[#4338CA] px-4 text-sm font-medium transition hover:bg-[#3730A3]"
-                >
-                  TMDB
-                  <ExternalLink className="size-4" />
-                </a>
-                {movie.homepage ? (
-                  <a
-                    href={movie.homepage}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex h-10 items-center gap-2 rounded-md border border-white/20 bg-white/10 px-4 text-sm font-medium transition hover:bg-white/20"
-                  >
-                    Official site
-                    <Home className="size-4" />
-                  </a>
-                ) : null}
-              </div>
             </div>
           </div>
         </section>
+
+        {movie.trailer ? (
+          <section id="trailer" className="w-full max-w-6xl scroll-mt-6">
+            <div className="mb-6 flex min-h-[56px] items-center justify-between gap-4 border-b border-zinc-200 pb-4 dark:border-zinc-800">
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="h-9 w-1.5 shrink-0 rounded-full bg-[#4338CA]" />
+                <h2 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
+                  Trailer
+                </h2>
+              </div>
+              <a
+                href={movie.trailer.watchUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-10 shrink-0 items-center gap-2 rounded-md border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-800"
+              >
+                YouTube
+                <ExternalLink className="size-4" />
+              </a>
+            </div>
+            <div className="overflow-hidden rounded-[8px] border border-zinc-200 bg-zinc-950 shadow-sm dark:border-zinc-800">
+              <iframe
+                src={movie.trailer.embedUrl}
+                title={`${movie.title} ${movie.trailer.name}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                className="aspect-video w-full"
+              />
+            </div>
+          </section>
+        ) : null}
 
         {movie.cast.length ? (
           <section className="w-full max-w-6xl">
